@@ -1,5 +1,5 @@
 import { AgentPulse } from "@/components/AgentPulse";
-import { Header } from "@/components/Header";
+import YoutubeForm from "@/components/YoutubeForm";
 import Image from "next/image";
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
                 AI Content Agent
               </span>
             </h1>
-
+            <YoutubeForm/>
           </div>
         </div>
       </section>
