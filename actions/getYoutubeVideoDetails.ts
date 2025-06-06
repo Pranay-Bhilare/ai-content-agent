@@ -1,6 +1,5 @@
-type Props = {
-    videoId: string;
-  };
+"use server"
+
 import { google } from "googleapis"
 import { VideoDetails } from "@/types/types";
 
@@ -8,7 +7,7 @@ const youtube = google.youtube({
     version : "v3",
     auth: process.env.YOUTUBE_API_KEY
 })
-export async function getVideoDetails({ videoId }: Props){
+export async function getVideoDetails( videoId :string){
     console.log("Fetching video details for :", videoId);
     try { 
         const videoRepsonse = youtube.videos.list({
