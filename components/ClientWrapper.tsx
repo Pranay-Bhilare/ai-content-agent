@@ -1,5 +1,6 @@
 "use client";
 import { ClerkProvider } from "@clerk/nextjs";
+import ConvexClientProvider from "./ConvexWithClerkWrapper";
 
 export default function ClientWrapper({
   children,
@@ -7,8 +8,8 @@ export default function ClientWrapper({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ConvexClientProvider>
        {children}
-    </ClerkProvider>
+    </ConvexClientProvider  >
   );
 }
