@@ -1,3 +1,6 @@
+import ThumbnailGeneration from "@/components/ThumbnailGeneration";
+import TitleGeneration from "@/components/TitleGeneration";
+import Transcription from "@/components/Transcriptions";
 import YoutubeVideoDetails from "@/components/YoutubeVideoDetails";
 
 type Props = {
@@ -15,8 +18,11 @@ export default async function AnalysisPage({ params }: { params: Promise<{ video
                     {/* Youtube Video Details */}
                     <YoutubeVideoDetails videoId={videoId}/>
                     {/* Thumbnail Generation */}
+                    <ThumbnailGeneration videoId = {videoId}/>
                     {/* Title Generation */}
+                    <TitleGeneration videoId={videoId}/>
                     {/* Transcriptions */}
+                    <Transcription videoId={videoId}/>
                 </div>
                 {/* Right side */}
                 <div className="order:1 lg:order-2">

@@ -14,4 +14,10 @@ export interface VideoDetails {
     channel: ChannelDetails;
     publishedAt: string;
 }
+
+
+export interface TranscriptEntry  {
+  text : string;
+  timestamp : string
+}
   
