@@ -1,11 +1,16 @@
 "use client"
+import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
 import Image from "next/image";
 
 function ThumbnailGeneration(videoId : {videoId : string}){
-
+    const vId = videoId.videoId ; 
     const {user} = useUser();
-    const images = [] // TODO Pull from db
+    const images = useQuery(api.images.getImages, {
+        userId : user?.id ?? "",
+        videoId : vId
+    })
 
     return (
         <div className="rounded-xl flex flex-col p-4 border">
@@ -13,7 +18,7 @@ function ThumbnailGeneration(videoId : {videoId : string}){
                 Thumbnail Generation
             </div>
             <div className= {`flex overflow-x-auto gap-4 ${images?.length && "mt-4"}`}>
-                {images.map((image) => {
+                {images?.map((image) => (
                     image.url && (
                         <div key={image._id}
                             className="flex-none w-[200px] h-[110px] rounded-lg overflow-x-auto">
@@ -25,7 +30,7 @@ function ThumbnailGeneration(videoId : {videoId : string}){
                             />
                         </div>
                     )
-                })}
+                ))}
             </div>
             {/* No images generated yet */}
             {!images?.length && (
