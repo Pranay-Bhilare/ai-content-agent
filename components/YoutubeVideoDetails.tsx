@@ -23,7 +23,7 @@ function YoutubeVideoDetails({ videoId }: Props) {
     return (
         <div className="@container bg-white rounded-xl py-4">
             <div className="flex flex-col gap-8">
-                <div className="flex-shrink-0 @md:w-[750px]">
+                <div className="flex-shrink-0 @md:w-[600px]">
                     {/* Video Thumbnail */}
                     <Image 
                         src = {video.thumbnail}

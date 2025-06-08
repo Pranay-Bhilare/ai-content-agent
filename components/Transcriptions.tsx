@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function Transcription(videoId:{videoId: string}) {
     const [transcript, setTranscript] = useState<{transcription : TranscriptEntry, cache : string} | null>(null);
     return (
-        <div className="rounded-xl flex flex-col p-4 border">
+        <div className="rounded-xl flex flex-col p-4 border py-4">
             <div className="min-w-52">
                 Transcription
             </div>

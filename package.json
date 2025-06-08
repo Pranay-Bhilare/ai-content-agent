@@ -9,8 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/fal": "^0.1.12",
+    "@ai-sdk/google": "^1.2.19",
+    "@ai-sdk/luma": "^0.1.8",
+    "@ai-sdk/react": "^1.2.12",
+    "@ai-sdk/xai": "^1.2.16",
     "@clerk/nextjs": "^6.21.0",
     "@radix-ui/react-slot": "^1.2.3",
+    "ai": "^4.3.16",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.24.8",
@@ -19,7 +25,12 @@
     "next": "15.4.0-canary.67",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "tailwind-merge": "^3.3.0"
+    "react-markdown": "^10.1.0",
+    "t-youtube-transcript-fetcher": "^1.0.6",
+    "tailwind-merge": "^3.3.0",
+    "youtube-transcript": "^1.2.1",
+    "youtubei.js": "^13.4.0",
+    "zod": "^3.25.56"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
