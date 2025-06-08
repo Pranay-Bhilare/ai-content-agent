@@ -29,6 +29,7 @@
     "t-youtube-transcript-fetcher": "^1.0.6",
     "tailwind-merge": "^3.3.0",
     "youtube-transcript": "^1.2.1",
+    "youtube-transcript-plus": "^1.0.4",
     "youtubei.js": "^13.4.0",
     "zod": "^3.25.56"
   },
