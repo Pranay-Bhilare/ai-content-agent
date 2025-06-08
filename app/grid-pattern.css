@@ -1,0 +1,41 @@
+/* Sophisticated space-themed grid pattern background */
+.bg-grid-pattern {
+  background-size: 80px 80px; /* Increased grid size for more subtlety */
+  background-image: 
+    linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* Refined cosmic dust effect - reduced density and visibility */
+.bg-grid-pattern::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    /* Significantly reduced dot density and size */
+    radial-gradient(0.8px 0.8px at 30% 30%, rgba(139, 92, 246, 0.08) 1px, transparent 0),
+    radial-gradient(0.6px 0.6px at 70% 70%, rgba(14, 165, 233, 0.06) 1px, transparent 0);
+  background-size: 250px 250px; /* Much larger spacing between dots */
+  z-index: -1;
+  opacity: 0.3; /* Reduced opacity */
+  pointer-events: none;
+  filter: blur(0.5px); /* Subtle blur for less defined dots */
+}
+
+/* Add subtle animated gradient overlay */
+.bg-grid-pattern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(125deg, rgba(99, 102, 241, 0.03) 0%, transparent 40%, rgba(139, 92, 246, 0.03) 70%, transparent 100%);
+  z-index: -1;
+  opacity: 0.6;
+  pointer-events: none;
+}
