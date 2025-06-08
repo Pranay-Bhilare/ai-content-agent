@@ -15,7 +15,11 @@ export async function POST(req: Request) {
     return NextResponse.json({error : "Unauthorised"}, {status : 401});
   }
   const videoDetails = await getVideoDetails(videoId)
-  const systemMessage = `You are an AI agent, ready to take questions about video having following details of video titled: ${videoDetails?.title}$, which is having videoId as ${videoId}$ and your task is to answer the user specific question in very friendly manner and formatted in rich markdown format.`
+  const systemMessage = `You are an AI agent, ready to take questions about video having following details of video titled: ${videoDetails?.title}$, 
+  which is having videoId as ${videoId}$ and your task is to answer the user specific question in very friendly manner and formatted in rich NOTION markdown format. 
+  ALWAYS AND ALWAYS MAKE SURE THAT YOU GIVE IN NOTION FORMAT , AND PROPER MARKDOWN INSTEAD OF JUST IN PARAGRAPH FORMAT, SO THAT USER CAN READ YOUR RESPONSE CORRECTLY, 
+  FOR EXAMPLE IF TRANSCRIPT IS THERE , THEN IN POINTS ACCORDING TO THE SEGMENTS OF TRANSCRIPT, 
+  THIS WAS JUST AN EXAMPLE BUT THIS IS HOW YOU WILL ALWAYS MAKE SURE THAT USER GET THE OUTPUT IN VERY INTUTIVE AND EASY TO READ FORMAT`
   const  result  = await streamText({
     model: google("models/gemini-2.0-flash-exp"),
     messages : [{

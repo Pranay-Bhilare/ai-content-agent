@@ -35,8 +35,10 @@ function AiAgentChat(videoID:{videoId: string}){
 
                 {messages.map((m)=>(
                     <div key={m.id}>
+                        <div className="prose prose-sm max-w-none">
                         {m.role === 'user' ? 'User: ' : 'AI: '}
                         <ReactMarkdown>{m.content}</ReactMarkdown>
+                        </div>
                     </div>
                 ))}
                 </div>
