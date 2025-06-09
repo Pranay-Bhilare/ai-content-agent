@@ -1,3 +1,4 @@
+"use server"
 import { currentUser } from "@clerk/nextjs/server";
 import {Innertube} from "youtubei.js";
 import { TranscriptEntry } from "@/types/types";

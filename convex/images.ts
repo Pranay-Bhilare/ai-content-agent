@@ -1,5 +1,5 @@
 import {v} from "convex/values"
-import {query} from "./_generated/server"
+import {mutation, query} from "./_generated/server"
 
 export const getImages = query({
     args : { 
@@ -21,5 +21,26 @@ export const getImages = query({
             )
         )
         return imageUrls;
+    }
+})
+
+export const generateUploadUrl = mutation(async(ctx) => {
+    return await ctx.storage.generateUploadUrl();
+})
+
+export const storeImage = mutation({
+    args : {
+        storageId : v.id("_storage"),
+        videoId : v.string(),
+        userId: v.string(),
+    },
+    handler : async (ctx, args) => {
+        const imageId = await ctx.db.insert("images", {
+            storageId : args.storageId,
+            videoId : args.videoId,
+            userId: args.userId
+        });
+
+        return imageId
     }
 })

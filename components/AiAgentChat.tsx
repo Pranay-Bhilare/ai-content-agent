@@ -1,7 +1,9 @@
 "use client"
-import {useChat}from "@ai-sdk/react"
+import {Message, useChat}from "@ai-sdk/react"
 import { Button } from "./ui/button"
 import ReactMarkdown from "react-markdown"
+import { ImageIcon, LetterText, PenIcon } from "lucide-react";
+import remarkGfm from "remark-gfm";
 
 interface ToolInvocation{
     toolCallId : string;
@@ -17,15 +19,53 @@ const formatToolInvocation = (part: ToolPart) : string => {
     if(!part.toolInvocation) return "Unknown Tool";
     return `Tool used : ${part.toolInvocation.toolName}`;
 }
+
+  
 function AiAgentChat(videoID:{videoId: string}){
     const videoId = videoID.videoId 
-    const {messages, input, handleInputChange, handleSubmit} = useChat({
+    const {messages, input, handleInputChange, handleSubmit, append} = useChat({
         maxSteps : 5,
         body : {
             videoId
         }
     })
-
+    const generateScript = async () => {
+        const randomId = Math.random().toString(36).substring(2, 15);
+      
+        const userMessage: Message = {
+          id: `generate-script-${randomId}`,
+          role: "user",
+          content:
+            "Generate a step-by-step shooting script for this video that I can use on my own channel to produce a video that is similar to this one, don't do any other steps such as generating an image, just generate the script only!",
+        };
+      
+        append(userMessage);
+      };
+    
+      const generateTitle = async () => {
+        const randomId = Math.random().toString(36).substring(2, 15);
+      
+        const userMessage: Message = {
+          id: `generate-title-${randomId}`,
+          role: "user",
+          content:
+            "Generate a title for this video",
+        };
+      
+        append(userMessage);
+      }
+      const generateImage = async () => {
+        const randomId = Math.random().toString(36).substring(2, 15);
+      
+        const userMessage: Message = {
+          id: `generate-image-${randomId}`,
+          role: "user",
+          content:
+            "Generate a thumbnail for this video",
+        };
+      
+        append(userMessage);
+      }
     return(
         <div className="flex flex-col h-full">
             {/* Header */}
@@ -60,41 +100,28 @@ function AiAgentChat(videoID:{videoId: string}){
                                         : "bg-white border border-gray-200"
                                 } rounded-2xl px-6 py-4 shadow-sm`}
                             >
-                                {m.parts && m.role === "assistant" ? (
-                                    // AI message
-                                    <div className="space-y-3">
-                                        {m.parts.map((part, i) =>
-                                        part.type === "text" ? (
-                                            <div key={i} className="prose prose-sm max-w-none">
-                                            <ReactMarkdown>{part.text}</ReactMarkdown>
-                                            </div>
-                                        ) : part.type === "tool-invocation" ? (
-                                            <div
-                                            key={i}
-                                            className="bg-white/50 rounded-lg p-2 space-y-2 text-gray-800"
-                                            >
-                                            <div className="font-medium text-xs">
-                                                {formatToolInvocation(part as ToolPart)}
-                                            </div>
-                                            {(part as ToolPart).toolInvocation.result && (
-                                                <pre className="text-xs bg-white/75 p-2 rounded overflow-auto max-h-40">
-                                                {JSON.stringify(
-                                                    (part as ToolPart).toolInvocation.result,
-                                                    null,
-                                                    2
-                                                )}
-                                                </pre>
-                                            )}
-                                            </div>
-                                        ) : null
-                                        )}
+                                {m.role === "assistant" ? (
+                                    <div className="prose prose-sm max-w-none">
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                h1: ({node, ...props}) => <h1 className="text-2xl font-bold mt-4 mb-2" {...props} />,
+                                                h2: ({node, ...props}) => <h2 className="text-xl font-semibold mt-3 mb-2" {...props} />,
+                                                h3: ({node, ...props}) => <h3 className="text-lg font-medium mt-2 mb-1" {...props} />,
+                                                p: ({node, ...props}) => <p className="text-base leading-relaxed mb-2" {...props} />,
+                                                ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
+                                                ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
+                                                li: ({node, ...props}) => <li className="ml-4 mb-1" {...props} />,
+                                            }}
+                                        >
+                                            {m.content}
+                                        </ReactMarkdown>
                                     </div>
-                                    ) : (
-                                        <div className="prose prose-sm max-w-none text-white">
-                                            <ReactMarkdown>{m.content}</ReactMarkdown>
-                                        </div>
-                                    )}
-
+                                ) : (
+                                    <div className="prose prose-sm max-w-none prose-invert">
+                                        <ReactMarkdown>{m.content}</ReactMarkdown>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}
@@ -118,6 +145,42 @@ function AiAgentChat(videoID:{videoId: string}){
                         Send
                     </Button>
                 </form>
+                <div className="flex gap-2">
+                    <button
+                        className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={generateScript}
+                        type="button"
+                    >
+                        <LetterText className="w-4 h-4 text-black" />
+                        <div className="text-black">
+                            Generate Script
+                        </div>
+                        
+                    </button>
+                    <button
+                        className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={generateTitle}
+                        type="button"
+                        >
+                        <PenIcon className="w-4 h-4 text-black" />
+                        <div className="text-black">
+                        Generate Title
+                        </div>
+                    </button>
+
+                    <button
+                        className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={generateImage}
+                        type="button"
+                        >
+                        <ImageIcon className="w-4 h-4 text-black"/>
+                        <div className="text-black">
+                        Generate Image
+                        </div>
+                    </button>
+
+                    </div>
+
             </div>
         </div>
     )

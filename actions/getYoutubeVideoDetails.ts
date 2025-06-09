@@ -7,7 +7,7 @@ const youtube = google.youtube({
     version : "v3",
     auth: process.env.YOUTUBE_API_KEY
 })
-export async function getVideoDetails( videoId :string){
+export async function getVideoDetails( videoId :string) : Promise<VideoDetails | null>{
     console.log("Fetching video details for :", videoId);
     try { 
         const videoRepsonse = youtube.videos.list({

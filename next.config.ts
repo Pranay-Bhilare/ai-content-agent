@@ -11,7 +11,11 @@ const nextConfig: NextConfig = {
     {
       hostname: "yt3.ggpht.com",
       protocol: "https"
-  }]
+  },
+{
+  hostname:"trustworthy-peacock-914.convex.cloud",
+  protocol:"https"
+}]
   }
 };
 
