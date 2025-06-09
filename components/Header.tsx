@@ -33,7 +33,7 @@ const useMousePosition = () => {
   return { mouseX, mouseY, position };
 };
 
-export function Header() {
+export default function Header() {
   const { mouseX, mouseY, position } = useMousePosition();
   const [isHovered, setIsHovered] = useState(false);
   
@@ -125,7 +125,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2 group">
           <AgentPulse size="small" />
           <span className="font-medium text-lg bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 to-indigo-400 tracking-tight">
-            AI Content Agent
+            UGen
           </span>
         </Link>
 

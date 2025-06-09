@@ -2,6 +2,8 @@
 import { getVideoTranscripts } from "@/actions/getYoutubeVideoTranscript";
 import { TranscriptEntry } from "@/types/types";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { FileText } from "lucide-react";
 
 // Define a more specific type for the component's props
 interface TranscriptionProps {
@@ -43,29 +45,65 @@ export default function Transcription({ videoId }: TranscriptionProps) {
     }, [videoId]);
 
     return (
-        <div className="rounded-xl flex flex-col border bg-gray-50 shadow-sm">
-            <div className="p-4 border-b bg-white rounded-t-xl">
-                <h2 className="text-lg font-semibold text-gray-800">Transcription</h2>
+        <div className="space-y-4 p-4">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5 text-indigo-400" />
+                    <h2 className="text-lg font-semibold text-white">Transcription</h2>
+                </div>
                 {!isLoading && transcriptData?.cache && (
-                    <p className="text-xs text-gray-400 mt-1">{transcriptData.cache}</p>
+                    <p className="text-xs text-white/40">{transcriptData.cache}</p>
                 )}
             </div>
-            <div className="flex flex-col gap-4 max-h-[70vh] overflow-y-auto p-4">
+
+            <div className="space-y-4">
                 {isLoading ? (
-                    <p className="text-sm text-gray-500">Loading transcript...</p>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="flex items-center justify-center py-8"
+                    >
+                        <div className="text-white/80 animate-pulse">Loading transcript...</div>
+                    </motion.div>
                 ) : error ? (
-                    <p className="text-sm text-red-500">{error}</p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-red-400 text-center py-8"
+                    >
+                        {error}
+                    </motion.div>
                 ) : transcriptData && transcriptData.transcript.length > 0 ? (
-                    transcriptData.transcript.map((entry, index) => (
-                        <div key={index} className="flex gap-3 items-start">
-                            <span className="text-sm font-mono text-blue-600 min-w-[50px] pt-0.5">
-                                {entry.timestamp}
-                            </span>
-                            <p className="text-sm text-gray-700 leading-relaxed">{entry.text}</p>
-                        </div>
-                    ))
+                    <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-4 scrollbar-thin scrollbar-track-white/5 scrollbar-thumb-white/10 hover:scrollbar-thumb-white/20">
+                        {transcriptData.transcript.map((entry, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.03 }}
+                                className="flex gap-4 items-start group"
+                            >
+                                <span className="text-sm font-mono text-indigo-400 min-w-[50px] pt-0.5 opacity-60 group-hover:opacity-100 transition-opacity">
+                                    {entry.timestamp}
+                                </span>
+                                <p className="text-sm text-white/80 leading-relaxed group-hover:text-white transition-colors">
+                                    {entry.text}
+                                </p>
+                            </motion.div>
+                        ))}
+                    </div>
                 ) : (
-                    <p className="text-sm text-gray-500">No transcription available for this video.</p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-center py-8 px-4 rounded-lg mt-4 border border-white/10 bg-white/5 backdrop-blur-sm"
+                    >
+                        <p className="text-white/80">No transcription available for this video</p>
+                        <p className="text-sm text-white/60 mt-1">
+                            Generate a transcript to see it appear here
+                        </p>
+                    </motion.div>
                 )}
             </div>
         </div>

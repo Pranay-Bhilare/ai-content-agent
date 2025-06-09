@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as images from "../images.js";
+import type * as titles from "../titles.js";
 import type * as transcript from "../transcript.js";
 
 /**
@@ -26,6 +27,7 @@ import type * as transcript from "../transcript.js";
  */
 declare const fullApi: ApiFromModules<{
   images: typeof images;
+  titles: typeof titles;
   transcript: typeof transcript;
 }>;
 export declare const api: FilterApi<

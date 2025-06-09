@@ -33,7 +33,7 @@ export default defineSchema({
     titles : defineTable({
         videoId : v.string(),
         userId : v.string(),
-        titles : v.string()
+        title : v.string()
     }).index("by_user_id", ["userId"])
     .index("by_video_id",["videoId"]) 
     .index("by_user_and_video_id", ["userId","videoId"])

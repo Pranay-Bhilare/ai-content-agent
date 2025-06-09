@@ -160,7 +160,7 @@ export function HeroSection() {
           <Link href="/" className="flex items-center gap-2 group">
             <AgentPulse size="small" />
             <span className="font-medium text-lg bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 to-indigo-400 tracking-tight">
-              AI Content Agent
+              UGen
             </span>
           </Link>
 
@@ -434,8 +434,8 @@ export function HeroSection() {
             >
               {/* Animated title with enhanced space-themed typography */}
               <AnimatedTitle 
-                text="Meet Your Personal AI Content Agent"
-                highlightedText="AI Content Agent"
+                text="Meet Your Personal AI Youtube Agent"
+                highlightedText="AI Youtube Agent"
                 className="text-4xl md:text-5xl lg:text-7xl font-bold text-gray-50 tracking-tight leading-[1.1]"
                 glowColor="#6366f1"
                 delay={0.3}

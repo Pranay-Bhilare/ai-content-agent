@@ -1,55 +1,69 @@
 "use client"
+
+import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
-import { Copy } from "lucide-react";
+import { useQuery } from "convex/react";
+import { motion } from "framer-motion";
+import { Type } from "lucide-react";
+import { Id } from "@/convex/_generated/dataModel";
 
-export default function TitleGeneration(videoId : {videoId : string}){
+interface Title {
+    _id: Id<"titles">;
+    _creationTime: number;
+    videoId: string;
+    userId: string;
+    title: string;
+}
 
-    const {user} = useUser();
-    const titles = [] // TODO Pull from db
-    const copyToClipboard = (title : string) => {
-        navigator.clipboard.writeText(title);
-        // toast.success("Copied to clipboard");
-    };   
+function TitleGeneration(videoId: { videoId: string }) {
+    const { user } = useUser();
+    const titles = useQuery(api.titles.getTitles, {
+        userId: user?.id ?? "",
+        videoId: videoId.videoId
+    });
+
     return (
-        <div className="rounded-xl flex flex-col p-4 border">
-            <div className="min-w-52">
-                Titles Generation
+        <div className="space-y-4 p-4">
+            <div className="flex items-center gap-3">
+                <Type className="w-5 h-5 text-indigo-400" />
+                <h2 className="text-lg font-semibold text-white">Title Generation</h2>
             </div>
-            <div className="space-y-3 mt-4 max-h-[280px] overflow-y-auto">
-            {titles.map((title) => (
-                <div
-                    key={title._id}
-                    className="group relative p-4 rounded-lg border border-gray-100 bg-gray-50 hover:bg-blue-50 hover:border-blue-100 transition-all duration-200"
-                >
-                    <div className="flex items-start justify-between gap-4">
-                        <p className="text-sm text-gray-900 leading-relaxed">
-                            {title.title}
-                        </p>
 
-                        <button
-                        onClick={() => copyToClipboard(title.title)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1.5 hover:bg-blue-100 rounded-md"
-                        title="Copy to clipboard"
-                        >
-                            <Copy className="w-4 h-4 text-blue-600" />
-                        </button>
-
-                    </div>
-                </div>
-                ))
-            }
+            <div className="space-y-3">
+                {titles?.map((title, index) => (
+                    <motion.div
+                        key={title._id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors group"
+                    >
+                        <div className="flex items-start gap-3">
+                            <span className="text-indigo-400 font-mono text-sm">#{index + 1}</span>
+                            <p className="text-white group-hover:text-white/90 transition-colors">
+                                {title.title}
+                            </p>
+                        </div>
+                    </motion.div>
+                ))}
             </div>
 
             {/* No titles generated yet */}
             {!titles?.length && (
-                <div className="text-center py-8 px-4 rounded-lg mt-4 border-2 border-dashed border-gray-200">
-                    <p className="text-gray-500">No titles have been generated yet</p>
-                    <p className="text-sm text-gray-400 mt-1">
-                    Generate titles to see them appear here
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center py-8 px-4 rounded-lg mt-4 border border-white/10 bg-white/5 backdrop-blur-sm"
+                >
+                    <p className="text-white/80">No titles have been generated yet</p>
+                    <p className="text-sm text-white/60 mt-1">
+                        Generate titles to see them appear here
                     </p>
-                </div>
+                </motion.div>
             )}
-
         </div>
-    )
-};
+    );
+}
+
+export default TitleGeneration;

@@ -1,189 +1,158 @@
 "use client"
-import {Message, useChat}from "@ai-sdk/react"
-import { Button } from "./ui/button"
-import ReactMarkdown from "react-markdown"
-import { ImageIcon, LetterText, PenIcon } from "lucide-react";
-import remarkGfm from "remark-gfm";
 
-interface ToolInvocation{
-    toolCallId : string;
-    toolName : string;
-    result? :Record <string, unknown>
-}
-interface ToolPart{
-    type : "tool-invocation";
-    toolInvocation : ToolInvocation
-}
+import { useChat } from "ai/react";
+import { useUser } from "@clerk/nextjs";
+import { ImageIcon, LetterText, PenIcon, SendHorizontal } from "lucide-react";
+import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 
-const formatToolInvocation = (part: ToolPart) : string => {
-    if(!part.toolInvocation) return "Unknown Tool";
-    return `Tool used : ${part.toolInvocation.toolName}`;
-}
+function AiAgentChat(videoID: { videoId: string }) {
+    const videoId = videoID.videoId;
+    const { user } = useUser();
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  
-function AiAgentChat(videoID:{videoId: string}){
-    const videoId = videoID.videoId 
-    const {messages, input, handleInputChange, handleSubmit, append} = useChat({
-        maxSteps : 5,
-        body : {
-            videoId
+    const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
+        api: "/api/chat",
+        body: {
+            videoId: videoId
         }
-    })
+    });
+
     const generateScript = async () => {
-        const randomId = Math.random().toString(36).substring(2, 15);
-      
-        const userMessage: Message = {
-          id: `generate-script-${randomId}`,
-          role: "user",
-          content:
-            "Generate a step-by-step shooting script for this video that I can use on my own channel to produce a video that is similar to this one, don't do any other steps such as generating an image, just generate the script only!",
-        };
-      
-        append(userMessage);
-      };
-    
-      const generateTitle = async () => {
-        const randomId = Math.random().toString(36).substring(2, 15);
-      
-        const userMessage: Message = {
-          id: `generate-title-${randomId}`,
-          role: "user",
-          content:
-            "Generate a title for this video",
-        };
-      
-        append(userMessage);
-      }
-      const generateImage = async () => {
-        const randomId = Math.random().toString(36).substring(2, 15);
-      
-        const userMessage: Message = {
-          id: `generate-image-${randomId}`,
-          role: "user",
-          content:
-            "Generate a thumbnail for this video",
-        };
-      
-        append(userMessage);
-      }
-    return(
+        await append({
+            role: "user",
+            content: "Generate a shooting script for this video"
+        });
+    };
+
+    const generateTitle = async () => {
+        await append({
+            role: "user",
+            content: "Generate 5 title options for this video"
+        });
+    };
+
+    const generateImage = async () => {
+        await append({
+            role: "user",
+            content: "Generate a thumbnail for this video"
+        });
+    };
+
+    // Scroll to bottom on new messages
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
+
+    return (
         <div className="flex flex-col h-full">
             {/* Header */}
-            <div className="px-6 py-4 border-b border-gray-200 bg-white">
-                <h2 className="text-xl font-semibold text-gray-800">AI Assistant</h2>
-                <p className="text-sm text-gray-500 mt-1">Ask questions about your video content</p>
+            <div className="px-6 py-4 border-b border-white/10 bg-white/5 backdrop-blur-md">
+                <h2 className="text-xl font-semibold text-white">AI Assistant</h2>
+                <p className="text-sm text-white/60 mt-1">Ask questions about your video content</p>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 bg-gray-50">
+            <div className="flex-1 min-h-0 overflow-y-auto px-6 py-6 bg-[#050816]/50">
                 <div className="space-y-6 max-w-3xl mx-auto">
-                    {messages.length === 0 && (
-                        <div className="flex items-center justify-center h-full min-h-[300px] bg-white rounded-xl border border-gray-200 p-8">
+                    {messages.length === 0 ? (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                            className="flex items-center justify-center h-full min-h-[300px] rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-8"
+                        >
                             <div className="text-center space-y-3">
-                                <h3 className="text-xl font-medium text-gray-700">
+                                <h3 className="text-xl font-medium text-white">
                                     Welcome! 👋
                                 </h3>
-                                <p className="text-gray-500 max-w-sm">
-                                    I'm your AI assistant, ready to help analyze your video content. 
+                                <p className="text-white/60 max-w-sm">
+                                    I'm your AI assistant, ready to help analyze your video content.
                                     Ask me anything about the video!
                                 </p>
                             </div>
+                        </motion.div>
+                    ) : (
+                        <div className="space-y-6">
+                            {messages.map((message, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                    className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                                >
+                                    <div
+                                        className={`max-w-[80%] rounded-lg p-4 ${
+                                            message.role === "user"
+                                                ? "bg-indigo-500/20 text-white"
+                                                : "bg-white/5 text-white/90"
+                                        }`}
+                                    >
+                                        <div className="prose prose-invert max-w-none">
+                                            {message.content}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                            <div ref={messagesEndRef} />
                         </div>
                     )}
-
-                    {messages.map((m) => (
-                        <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                            <div 
-                                className={`max-w-[85%] ${
-                                    m.role === "user" 
-                                        ? "bg-blue-600 text-white" 
-                                        : "bg-white border border-gray-200"
-                                } rounded-2xl px-6 py-4 shadow-sm`}
-                            >
-                                {m.role === "assistant" ? (
-                                    <div className="prose prose-sm max-w-none">
-                                        <ReactMarkdown
-                                            remarkPlugins={[remarkGfm]}
-                                            components={{
-                                                h1: ({node, ...props}) => <h1 className="text-2xl font-bold mt-4 mb-2" {...props} />,
-                                                h2: ({node, ...props}) => <h2 className="text-xl font-semibold mt-3 mb-2" {...props} />,
-                                                h3: ({node, ...props}) => <h3 className="text-lg font-medium mt-2 mb-1" {...props} />,
-                                                p: ({node, ...props}) => <p className="text-base leading-relaxed mb-2" {...props} />,
-                                                ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
-                                                ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
-                                                li: ({node, ...props}) => <li className="ml-4 mb-1" {...props} />,
-                                            }}
-                                        >
-                                            {m.content}
-                                        </ReactMarkdown>
-                                    </div>
-                                ) : (
-                                    <div className="prose prose-sm max-w-none prose-invert">
-                                        <ReactMarkdown>{m.content}</ReactMarkdown>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    ))}
                 </div>
             </div>
-            
-            {/* Input Form */}
-            <div className="border-t border-gray-200 p-6 bg-white">
-                <form onSubmit={handleSubmit} className="flex gap-3 max-w-3xl mx-auto">
-                    <input
-                        className="flex-1 px-4 py-3 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
-                        type="text"
-                        placeholder="Ask a question about your video..."
-                        value={input}
-                        onChange={handleInputChange}
-                    />
-                    <Button 
-                        type="submit"
-                        className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        Send
-                    </Button>
-                </form>
-                <div className="flex gap-2">
-                    <button
-                        className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={generateScript}
-                        type="button"
-                    >
-                        <LetterText className="w-4 h-4 text-black" />
-                        <div className="text-black">
-                            Generate Script
-                        </div>
-                        
-                    </button>
-                    <button
-                        className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={generateTitle}
-                        type="button"
-                        >
-                        <PenIcon className="w-4 h-4 text-black" />
-                        <div className="text-black">
-                        Generate Title
-                        </div>
-                    </button>
 
-                    <button
-                        className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={generateImage}
-                        type="button"
+            {/* Input Area */}
+            <div className="border-t border-white/10 bg-white/5 backdrop-blur-md p-4 sticky bottom-0 z-10">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={handleInputChange}
+                            placeholder="Ask me anything about your video..."
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        />
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-white/60 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
-                        <ImageIcon className="w-4 h-4 text-black"/>
-                        <div className="text-black">
-                        Generate Image
-                        </div>
-                    </button>
-
+                            <SendHorizontal className="w-5 h-5" />
+                        </button>
                     </div>
 
+                    <div className="flex gap-2">
+                        <button
+                            type="button"
+                            onClick={generateScript}
+                            className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors text-white"
+                        >
+                            <LetterText className="w-4 h-4" />
+                            Generate Script
+                        </button>
+                        <button
+                            type="button"
+                            onClick={generateTitle}
+                            className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors text-white"
+                        >
+                            <PenIcon className="w-4 h-4" />
+                            Generate Title
+                        </button>
+                        <button
+                            type="button"
+                            onClick={generateImage}
+                            className="text-xs xl:text-sm w-full flex items-center justify-center gap-2 py-2 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors text-white"
+                        >
+                            <ImageIcon className="w-4 h-4" />
+                            Generate Image
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-    )
+    );
 }
 
 export default AiAgentChat;
