@@ -10,8 +10,8 @@ const fetchTranscript = tool({
     execute : async ( { videoId  }) => {
         const transcript = await getVideoTranscripts(videoId);
         return{
-            transcript : transcript.transcript,
-            cache : transcript.cache
+            cache : transcript.cache,
+            transcript : transcript.transcript
         }
     }
 }) 

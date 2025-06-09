@@ -1,6 +1,10 @@
 import { currentUser } from "@clerk/nextjs/server";
 import {Innertube} from "youtubei.js";
 import { TranscriptEntry } from "@/types/types";
+import { ConvexHttpClient } from "convex/browser";
+import {api} from "@/convex/_generated/api"
+
+const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 function formatTimestamp(start_ms : number) {
     const minutes = Math.floor(start_ms/60000);
@@ -46,23 +50,48 @@ async function fetchTranscript(videoId: string): Promise<TranscriptEntry[]> {
 }
 
 export async function getVideoTranscripts(videoId: string) {
-    console.log(`🎯 getVideoTranscripts called for video: ${videoId}`);
-    const user = currentUser();
+    console.log(` getVideoTranscripts called for video: ${videoId}`);
+    const user = await currentUser();
     if(!user) {
         console.error(" User authentication failed");
         throw new Error("User not found");
     }
     console.log(" User authenticated");
     
-    try {
-        const transcript = await fetchTranscript(videoId);
-        console.log("📤 Returning transcript data with length:", transcript.length);
+    const existingTranscript = await convex.query(
+                                    api.transcript.getTranscriptByVideoId,
+                                    {videoId : videoId, userId : user.id})
+    
+    if(!existingTranscript){
+        console.log("Transcript not found in the database.")
+    }
+    if(existingTranscript){
+        console.log("Transcript found in database");
         return {
-            transcript: transcript,
-            cache: "This is not cached"
+            transcript : existingTranscript.transcript,
+            cache : "This video has already been transcribed once - Accessing transcribed cached one instead of redoing it and using a token"
+        }
+    }
+        try {
+            const transcript = await fetchTranscript(videoId);
+            console.log("Storing in the database ----");
+            await convex.mutation(api.transcript.storeTranscript,{
+                userId : user.id,
+                videoId : videoId,
+                transcript : transcript
+            })
+
+            console.log(" Returning transcript data with length:", transcript.length);
+            return {
+                transcript: transcript,
+                cache: "This is transcribed for the first time, the transcript is now saved in the database"
+            };
+        }
+    catch(error){
+        console.error("Error fetching the transcripts : ", error);
+        return {
+            transcript : [],
+            cache : "TError fetching the transcripts, please try again."
         };
-    } catch (error) {
-        console.error("Error getting transcripts:", error);
-        throw error;
     }
 }
