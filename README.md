@@ -1,6 +1,6 @@
 # AI Content Agent
 
-A modern, full-stack Next.js application for analyzing and enhancing YouTube videos with AI. Submit a YouTube URL to ask any questions related to the video, AI-generated titles, thumbnails, full transcriptions by an interactive AI AGENT for EVERYTHING.
+A modern, AI powered full-stack Next.js application for analyzing and enhancing YouTube videos with AI. Submit a YouTube URL to ask any questions related to the video, AI-generated titles, thumbnails, full transcriptions by an interactive AI AGENT for EVERYTHING.
 
 ## Features
 - **YouTube Video Analysis:** Fetches and allows you to ask any question about the video indexed.
