@@ -1,11 +1,13 @@
+import { Metadata } from 'next';
 import AnalysisPageClient from './AnalysisPageClient';
 
-type Props = {
-    params: { videoId: string };
-};
 
-export default async function AnalysisPage({ params }: Props) {
-    const { videoId } = params;
-    
-    return <AnalysisPageClient videoId={videoId} />;
+export default async function AnalysisPage({ params }: { params: Promise<{ videoId: string }> }) {
+    const video = await params;
+    return <AnalysisPageClient videoId={video.videoId} />;
 }
+
+export const metadata: Metadata = {
+    title: 'Video Analysis',
+    description: 'Analyze your YouTube video content with AI',
+};

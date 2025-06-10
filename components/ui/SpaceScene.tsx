@@ -2,8 +2,7 @@
 
 import React, { Suspense, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars, useTexture, PerspectiveCamera } from '@react-three/drei';
-import { SpaceshipModel } from './SpaceshipModel';
+import { Stars } from '@react-three/drei';
 import * as THREE from 'three';
 
 function FloatingParticles({ count = 100 }) {
@@ -68,7 +67,7 @@ function SpaceEnvironment() {
       <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
       <FloatingParticles count={200} />
       <Planet />
-      <SpaceshipModel position={[0, 0, -5]} scale={0.5} />
+      {/* <SpaceshipModel position={[0, 0, -5]} scale={0.5} /> */}
       <fog attach="fog" args={["#000000", 10, 50]} />
     </>
   );
@@ -79,7 +78,6 @@ export default function SpaceScene() {
     <div className="absolute inset-0 -z-10 h-screen w-full overflow-hidden">
       <Canvas shadows>
         <Suspense fallback={null}>
-          <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={60} />
           <SpaceEnvironment />
         </Suspense>
       </Canvas>

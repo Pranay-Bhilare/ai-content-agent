@@ -13,13 +13,13 @@ type AnimatedTitleProps = {
 };
 
 export function AnimatedTitle({ text, highlightedText, className, glowColor = '#6366f1', delay = 0, subtitle }: AnimatedTitleProps) {
-  // Mouse tracking for minimal 3D rotation effect
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
-  // Transform mouse position into very subtle rotation values
-  const rotateX = useTransform(mouseY, [-300, 300], [2, -2]); // Significantly reduced rotation
-  const rotateY = useTransform(mouseX, [-300, 300], [-2, 2]); // Significantly reduced rotation
+  const subtitleControls = useAnimation();
+
+  // Move useTransform hooks to the top level
+  const rotateX = useTransform(mouseY, [-300, 300], [1, -1]);
+  const rotateY = useTransform(mouseX, [-300, 300], [-1, 1]);
   const perspective = useTransform(mouseX, [-300, 300], [1000, 1100]); // Reduced perspective change
   const scale = useTransform(
     mouseX,
@@ -28,7 +28,6 @@ export function AnimatedTitle({ text, highlightedText, className, glowColor = '#
   );
   
   const controls = useAnimation();
-  const subtitleControls = useAnimation();
   const [hovered, setHovered] = useState<number | null>(null);
   const [isHovering, setIsHovering] = useState(false);
   
@@ -46,8 +45,8 @@ export function AnimatedTitle({ text, highlightedText, className, glowColor = '#
     const normalizedX = (e.clientX - centerX) / (rect.width / 2);
     const normalizedY = (e.clientY - centerY) / (rect.height / 2);
     
-    mouseX.set(normalizedX * 60); // Significantly reduced effect intensity
-    mouseY.set(normalizedY * 60); // Significantly reduced effect intensity
+    mouseX.set(normalizedX * 60); // Use .set() method
+    mouseY.set(normalizedY * 60); // Use .set() method
     
     if (!isHovering) setIsHovering(true);
   };
@@ -276,7 +275,7 @@ export function AnimatedTitle({ text, highlightedText, className, glowColor = '#
           animate={{ scaleX: 1, opacity: 0.2 }} // Reduced opacity
           transition={{ delay: delay + 0.5, duration: 0.8 }}
           style={{
-            rotateX: useTransform(mouseY, [-300, 300], [2, -2]), // Minimal rotation
+            rotateX,
             z: -3,
             transformStyle: 'preserve-3d',
           }}
@@ -289,11 +288,11 @@ export function AnimatedTitle({ text, highlightedText, className, glowColor = '#
       {subtitle && (
         <motion.p 
           className="text-center mt-6 text-lg max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 5 }} // Reduced initial values
+          initial={{ opacity: 0, y: 5 }}
           animate={subtitleControls}
           style={{
-            rotateX: useTransform(mouseY, [-300, 300], [1, -1]), // Minimal rotation
-            rotateY: useTransform(mouseX, [-300, 300], [-1, 1]), // Minimal rotation
+            rotateX,
+            rotateY,
             transformStyle: 'preserve-3d',
           }}
         >

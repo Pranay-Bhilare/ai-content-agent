@@ -69,7 +69,7 @@ function AiAgentChat(videoID: { videoId: string }) {
                                     Welcome! 👋
                                 </h3>
                                 <p className="text-white/60 max-w-sm">
-                                    I'm your AI assistant, ready to help analyze your video content.
+                                    I&apos;m your AI assistant, ready to help analyze your video content.
                                     Ask me anything about the video!
                                 </p>
                             </div>

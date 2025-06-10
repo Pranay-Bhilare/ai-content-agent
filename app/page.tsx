@@ -47,13 +47,13 @@ export default function Home() {
               exit={{ scale: 1.1, opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="w-24 h-24 mb-8 relative">
+              <div className="w-30 h-30 mb-8 relative">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 animate-pulse blur-xl opacity-70"></div>
                 <div className="absolute inset-0 rounded-full border-2 border-indigo-500 animate-spin"></div>
                 <div className="absolute inset-2 rounded-full border-2 border-purple-500 animate-spin-slow"></div>
                 <div className="absolute inset-4 rounded-full border-2 border-blue-500 animate-reverse-spin"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-white">AI</span>
+                  <span className="text-2xl font-bold text-white">UGen</span>
                 </div>
               </div>
               <motion.h2 

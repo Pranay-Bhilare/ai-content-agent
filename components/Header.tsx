@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
 import { AgentPulse } from './AgentPulse';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 
@@ -36,6 +36,7 @@ const useMousePosition = () => {
 export default function Header() {
   const { mouseX, mouseY, position } = useMousePosition();
   const [isHovered, setIsHovered] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   
   // Generate cosmic particles
   const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, size: number, duration: number}>>([]);

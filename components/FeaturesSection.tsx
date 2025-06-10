@@ -13,7 +13,6 @@ export function FeaturesSection() {
   
   // Parallax and opacity effects
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
   
   // Feature data
   const features = [
