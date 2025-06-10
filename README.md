@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Content Agent
+
+A modern, full-stack Next.js application for analyzing and enhancing YouTube videos with AI. Submit a YouTube URL to get instant video insights, AI-generated titles, thumbnails, full transcriptions, and an interactive AI assistant for content ideation.
+
+## Features
+- **YouTube Video Analysis:** Fetches and displays video details (title, channel, stats, thumbnail).
+- **AI Title Generation:** Suggests multiple engaging titles for your video.
+- **AI Thumbnail Generation:** Creates unique, AI-generated thumbnails.
+- **Full Transcription:** Retrieves and displays the complete transcript of the video.
+- **AI Chat Assistant:** Ask questions, generate scripts, titles, and thumbnails via an AI-powered chat.
+- **Modern UI:** Animated, responsive design with 3D backgrounds and smooth transitions.
+- **Authentication:** Secure user authentication with Clerk.
+- **Backend:** Uses Convex for real-time backend/database operations.
+
+## Tech Stack
+- **Frontend:** Next.js (App Router), React 19, Tailwind CSS, Framer Motion, Three.js
+- **Backend:** Convex, Next.js API routes, AI SDKs
+- **Auth:** Clerk
+- **AI Integrations:** OpenAI, Google, Luma, and more via SDKs
+- **YouTube Data:** Multiple transcript and video info libraries
 
 ## Getting Started
 
-First, run the development server:
-
+### 1. Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Set up environment variables
+Create a `.env.local` file in the root with your API keys and credentials (YouTube, Clerk, Convex, etc.). Example:
+```
+CLERK_SECRET_KEY=your_clerk_secret
+CONVEX_DEPLOYMENT=your_convex_url
+YOUTUBE_API_KEY=your_youtube_api_key
+# ...other keys as needed
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Run the development server
+```bash
+pnpm dev
+```
+Visit [http://localhost:3000](http://localhost:3000) to use the app.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Usage
+1. **Enter a YouTube URL** on the homepage.
+2. **Get redirected** to the analysis dashboard for that video.
+3. **Explore:**
+   - Video details and stats
+   - AI-generated titles and thumbnails
+   - Full transcript
+   - Chat with the AI assistant for scripts, ideas, and more
 
-## Learn More
+## Scripts
+- `pnpm dev` – Start development server
+- `pnpm build` – Build for production
+- `pnpm start` – Start production server
+- `pnpm lint` – Lint code
 
-To learn more about Next.js, take a look at the following resources:
+## Customization
+- **Components:** `/components`
+- **Backend/DB Logic:** `/actions`, `/convex`
+- **Utilities:** `/lib`
+- **Types:** `/types`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
+Deploy easily on [Vercel](https://vercel.com/) for best performance and zero-config hosting.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**AI Content Agent** – Analyze, ideate, and enhance your YouTube content with the power of AI.
