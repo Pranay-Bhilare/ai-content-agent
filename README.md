@@ -1,9 +1,9 @@
 # AI Content Agent
 
-A modern, full-stack Next.js application for analyzing and enhancing YouTube videos with AI. Submit a YouTube URL to get instant video insights, AI-generated titles, thumbnails, full transcriptions, and an interactive AI assistant for content ideation.
+A modern, full-stack Next.js application for analyzing and enhancing YouTube videos with AI. Submit a YouTube URL to ask any questions related to the video, AI-generated titles, thumbnails, full transcriptions by an interactive AI AGENT for EVERYTHING.
 
 ## Features
-- **YouTube Video Analysis:** Fetches and displays video details (title, channel, stats, thumbnail).
+- **YouTube Video Analysis:** Fetches and allows you to ask any question about the video indexed.
 - **AI Title Generation:** Suggests multiple engaging titles for your video.
 - **AI Thumbnail Generation:** Creates unique, AI-generated thumbnails.
 - **Full Transcription:** Retrieves and displays the complete transcript of the video.
@@ -45,10 +45,12 @@ Visit [http://localhost:3000](http://localhost:3000) to use the app.
 1. **Enter a YouTube URL** on the homepage.
 2. **Get redirected** to the analysis dashboard for that video.
 3. **Explore:**
+   - Ask any question to the agent about the video
    - Video details and stats
    - AI-generated titles and thumbnails
    - Full transcript
-   - Chat with the AI assistant for scripts, ideas, and more
+   - Chat with the AI AGENT for scripts, ideas, and more
+   - Leverage the AI AGENT which has access to many tools.
 
 ## Scripts
 - `pnpm dev` – Start development server
@@ -62,9 +64,6 @@ Visit [http://localhost:3000](http://localhost:3000) to use the app.
 - **Utilities:** `/lib`
 - **Types:** `/types`
 
-## Deployment
-Deploy easily on [Vercel](https://vercel.com/) for best performance and zero-config hosting.
-
 ---
 
-**AI Content Agent** – Analyze, ideate, and enhance your YouTube content with the power of AI.
+**AI Content Agent** – Analyze, ideate, and enhance your YouTube content with the power of AI AGENT.
