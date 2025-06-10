@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
 import { AgentPulse } from './AgentPulse';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { Github } from 'lucide-react';
 
 // Custom hook for mouse position tracking with enhanced sensitivity
 const useMousePosition = () => {
@@ -131,6 +132,16 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center gap-4">
+          {/* GitHub Icon Button */}
+          <a
+            href="https://github.com/Pranay-Bhilare/ai-content-agent" // TODO: Replace with your actual GitHub URL
+            target="github"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center rounded-md bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/20 hover:border-indigo-500/40 p-2 transition-all duration-200 text-indigo-200"
+            aria-label="View on GitHub"
+          >
+            <Github size={20} strokeWidth={1.7} />
+          </a>
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>

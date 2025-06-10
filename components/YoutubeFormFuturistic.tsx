@@ -198,7 +198,7 @@ export default function YoutubeFormFuturistic() {
             whileHover={{ color: '#a5b4fc' }}
             transition={{ duration: 0.2 }}
           >
-            Paste any YouTube URL to get AI-powered insights and optimization
+            Paste any YouTube URL !
           </motion.p>
         </motion.div>
       </motion.div>

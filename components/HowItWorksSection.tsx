@@ -75,7 +75,7 @@ function Step({ number, title, description, icon, delay = 0 }: StepProps) {
   return (
     <motion.div
       ref={ref}
-      className="flex items-start gap-6 relative"
+      className="flex items-center gap-6 relative min-h-[96px] w-full"
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-100px" }}
@@ -88,7 +88,7 @@ function Step({ number, title, description, icon, delay = 0 }: StepProps) {
     >
       {/* Step number with enhanced glow effect */}
       <motion.div 
-        className="relative flex-shrink-0"
+        className="relative flex-shrink-0 w-16 h-16 flex items-center justify-center"
         whileHover={{ scale: 1.1 }}
         transition={{ type: 'spring', stiffness: 400, damping: 10 }}
         style={{
@@ -134,16 +134,14 @@ function Step({ number, title, description, icon, delay = 0 }: StepProps) {
       </motion.div>
       
       {/* Step content with 3D effect */}
-      <div className="flex-1">
+      <div className="flex-1 w-full">
         <motion.div
           style={{
             transformStyle: 'preserve-3d',
-            rotateX,
-            rotateY,
           }}
         >
           <HolographicCard 
-            className="p-6" 
+            className="p-6 w-full" 
             glowColor="#4F46E5" 
             hoverScale={1.03}
             rotationIntensity={15}
@@ -276,7 +274,7 @@ export function HowItWorksSection() {
     {
       number: 1,
       title: 'Paste YouTube URL',
-      description: 'Simply paste any YouTube video URL into our futuristic interface.',
+      description: 'Enter any YouTube video link to start the analysis process.',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
@@ -286,8 +284,8 @@ export function HowItWorksSection() {
     },
     {
       number: 2,
-      title: 'AI Analysis',
-      description: 'Our advanced AI analyzes the video content, transcripts, and metadata in seconds.',
+      title: 'Video Analysis & Transcription',
+      description: 'Our AI Agent fetches video details and generates a full, accurate transcript.',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -296,8 +294,8 @@ export function HowItWorksSection() {
     },
     {
       number: 3,
-      title: 'Get Insights',
-      description: 'Receive detailed insights, transcripts, and content optimization suggestions.',
+      title: 'AI-Powered Insights & Suggestions',
+      description: 'Receive actionable insights, content optimization tips, and AI-generated ideas for your video.',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -307,8 +305,8 @@ export function HowItWorksSection() {
     },
     {
       number: 4,
-      title: 'Enhance Content',
-      description: 'Use AI-generated suggestions to improve your titles, descriptions, and thumbnails.',
+      title: 'Generate Titles, Thumbnails & More',
+      description: 'Get multiple AI-generated titles, unique thumbnails, and use the AI chat assistant for scripts and creative help.',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 20h9" />
@@ -454,7 +452,7 @@ export function HowItWorksSection() {
         </motion.div>
         
         {/* Steps with enhanced 3D and cosmic styling */}
-        <div className="max-w-3xl mx-auto space-y-12 relative">
+        <div className="max-w-3xl w-full mx-auto space-y-12 relative">
           {steps.map((step, index) => (
             <Step
               key={index}
